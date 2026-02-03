@@ -22,4 +22,16 @@ Esta práctica será desarrollada con estructura de ramales por cada fase, para 
 |5.| Implementación de Backend para Consumo (JS) | X | ✅ Finalizado |
 |6.| Configuración del Entorno | X | ✅ Finalizado |
 |7.| Pruebas de Ejecución | X | ✅ Finalizado |
-|8.| Documentación | X | ✅ Finalizado  |
+|8.| Documentación | X | ✅ Finalizado |
+
+
+### Resultados obtenidos:
+
+1. Vista de la pagina principal 
+**![general_view](./src/capturas/Captura%20de%20pantalla%202026-02-03%20151344.png)**
+
+2. Busqueda de un lugar en el mapa
+**![general_view](./src/capturas/Captura%20de%20pantalla%202026-02-03%20151514.png)**
+
+3. Tablas 
+**![general_view](./src/capturas/Captura%20de%20pantalla%202026-02-03%20151546.png)**
