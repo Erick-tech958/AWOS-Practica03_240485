@@ -20,6 +20,6 @@ Esta práctica será desarrollada con estructura de ramales por cada fase, para 
 |3.| Configuración de la Libreria de Estilos (Tailwind CSS) | X | ✅ Finalizado |
 |4.| Creación de Vistas   | X |✅ Finalizado |
 |5.| Implementación de Backend para Consumo (JS) | X | ✅ Finalizado |
-|6.| Configuración del Entorno | X | ❌ Sin iniciar |
+|6.| Configuración del Entorno | X | ✅ Finalizado |
 |7.| Pruebas de Ejecución | X | ❌ Sin iniciar |
 |8.| Documentación | X | ❌ Sin iniciar |
