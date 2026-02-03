@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparación de APIs de Mapas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'google-blue': '#4285F4',
+                        'leaflet-green': '#2AAD27',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .map-container { height: 400px; width: 100%; border-radius: 0.5rem; background: #f3f4f6; }
+        .api-card { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <header class="bg-gradient-to-r from-google-blue to-leaflet-green text-white shadow-lg p-6 mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold"><i class="fas fa-map-marked-alt mr-3"></i>Comparación de APIs de Mapas</h1>
+            <p class="opacity-90">Google Maps vs Leaflet - Buscador Funcional</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4">
+        <div class="api-card mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2">
+                    <div class="flex">
+                        <input type="text" id="addressInput" placeholder="Busca un lugar (ej: Xicotepec de Juarez, Puebla)" 
+                               class="flex-grow px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-google-blue">
+                        <button id="searchButton" class="bg-google-blue text-white px-6 py-3 rounded-r-lg hover:bg-blue-600 transition">
+                            <i class="fas fa-search mr-2"></i>Buscar
+                        </button>
+                    </div>
+                    <p id="status" class="mt-2 text-sm text-gray-500 italic"></p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-bold text-sm mb-2"><i class="fas fa-info-circle mr-2"></i>Coordenadas Actuales</h3>
+                    <div class="text-xs font-mono text-gray-600">
+                        <p>Lat: <span id="currentLat">19.4326</span></p>
+                        <p>Lng: <span id="currentLng">-99.1332</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="api-card">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-google-blue"><i class="fab fa-google mr-2"></i>Google Maps</h2>
+                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">PROPIETARIO</span>
+                </div>
+                <div id="googleMap" class="map-container"></div>
+            </div>
+            <div class="api-card">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-leaflet-green"><i class="fas fa-leaf mr-2"></i>Leaflet.js</h2>
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">OPEN SOURCE</span>
+                </div>
+                <div id="leafletMap" class="map-container"></div>
+            </div>
+        </div>
+
+        <div class="api-card mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-center"><i class="fas fa-balance-scale mr-3"></i>Comparación de Funcionalidades</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Funcionalidad</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-google-blue uppercase">Google Maps</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-leaflet-green uppercase">Leaflet</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                        <tr>
+                            <td class="px-6 py-4 font-medium">Costo</td>
+                            <td class="px-6 py-4">Gratuito hasta límite</td>
+                            <td class="px-6 py-4">Completamente gratuito</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-medium">Navegación</td>
+                            <td class="px-6 py-4 text-green-600"><i class="fas fa-check mr-1"></i> Completa</td>
+                            <td class="px-6 py-4 text-green-600"><i class="fas fa-check mr-1"></i> Básica</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-medium">Street View</td>
+                            <td class="px-6 py-4 text-green-600"><i class="fas fa-check mr-1"></i> Disponible</td>
+                            <td class="px-6 py-4 text-red-600"><i class="fas fa-times mr-1"></i> No disponible</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="api-card text-center">
+                <div class="text-3xl font-bold text-google-blue mb-2" id="googleCount">1</div>
+                <div class="text-gray-500 text-sm">Marcadores Google</div>
+            </div>
+            <div class="api-card text-center">
+                <div class="text-3xl font-bold text-leaflet-green mb-2" id="leafletCount">1</div>
+                <div class="text-gray-500 text-sm">Marcadores Leaflet</div>
+            </div>
+            <div class="api-card text-center">
+                <div class="text-3xl font-bold text-purple-600 mb-2" id="totalSearches">0</div>
+                <div class="text-gray-500 text-sm">Búsquedas Realizadas</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ8iBTlArTxVAQMNDPMTuh1KEmtemYMxE&callback=initMaps" async defer></script>
+
+    <script>
+        let lMap, gMap, gMarker, lMarker;
+        let searchCounter = 0;
+
+        function initMaps() {
+            const initialPos = { lat: 19.4326, lng: -99.1332 };
+
+            // Inicializar Google
+            gMap = new google.maps.Map(document.getElementById("googleMap"), { center: initialPos, zoom: 14 });
+            gMarker = new google.maps.Marker({ position: initialPos, map: gMap, animation: google.maps.Animation.DROP });
+
+            // Inicializar Leaflet
+            lMap = L.map('leafletMap').setView([initialPos.lat, initialPos.lng], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(lMap);
+            lMarker = L.marker([initialPos.lat, initialPos.lng]).addTo(lMap);
+        }
+
+        async function searchLocation() {
+            const query = document.getElementById('addressInput').value;
+            const status = document.getElementById('status');
+            if (!query) return;
+
+            status.innerText = "Buscando...";
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lon = parseFloat(data[0].lon);
+                    const newPos = { lat, lng: lon };
+
+                    // Mover Google
+                    gMap.setCenter(newPos);
+                    gMarker.setPosition(newPos);
+
+                    // Mover Leaflet
+                    lMap.setView([lat, lon], 14);
+                    lMarker.setLatLng([lat, lon]);
+
+                    // Actualizar UI
+                    document.getElementById('currentLat').innerText = lat.toFixed(4);
+                    document.getElementById('currentLng').innerText = lon.toFixed(4);
+                    status.innerText = "Ubicación encontrada.";
+                    
+                    searchCounter++;
+                    document.getElementById('totalSearches').innerText = searchCounter;
+                } else {
+                    status.innerText = "No se encontró el lugar.";
+                }
+            } catch (error) {
+                status.innerText = "Error en el servidor.";
+            }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', searchLocation);
+        document.getElementById('addressInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') searchLocation(); });
+
+        window.initMaps = initMaps;
+    </script>
+</body>
+</html>
